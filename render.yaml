@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: pharmasys-app
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: pharmasys-db
+          property: connectionString
+      - key: BOOTSTRAP_PASSWORD
+        sync: false
+
+databases:
+  - name: pharmasys-db
+    databaseName: pharmacy
+    user: pharmacy
+    plan: free
